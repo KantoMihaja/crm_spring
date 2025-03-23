@@ -78,7 +78,7 @@ public class BudgetController {
         if (user == null) {
             return "error/500";
         }
-
+// erreru
         if (user.isInactiveUser()) {
             return "error/account-inactive";
         }
