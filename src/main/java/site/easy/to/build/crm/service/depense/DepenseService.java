@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import site.easy.to.build.crm.entity.Depense;
 import site.easy.to.build.crm.repository.DepenseRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,13 @@ public class DepenseService {
 
     public Optional<Depense> findById(Integer id) {
         return depenseRepository.findById(id);
+    }
+
+    public List<Depense> findByCustomer(Integer customerId, LocalDateTime date) {
+        if (date == null) {
+            date = LocalDateTime.now();
+        }
+        return depenseRepository.findByCustomerAndDateBefore(customerId, date);
     }
 
     public Depense saveDepense(Depense depense) {
