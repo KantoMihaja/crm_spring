@@ -505,3 +505,15 @@ CREATE TABLE IF NOT EXISTS `google_drive_file` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+
+CREATE TABLE IF NOT EXISTS `budget`(
+   id INT NOT NULL AUTO_INCREMENT,
+   designation VARCHAR(255) ,
+   montant DECIMAL(15,2)   NOT NULL,
+   date_creation DATETIME ,
+   description TEXT,
+   id_customer INT unsigned NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_customer) REFERENCES customer(customer_id)
+);
