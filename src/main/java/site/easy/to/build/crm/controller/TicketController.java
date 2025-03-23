@@ -25,6 +25,7 @@ import site.easy.to.build.crm.util.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -131,7 +132,7 @@ public class TicketController {
     @PostMapping("/create-ticket")
     public String createTicket(@ModelAttribute("ticket") @Validated Ticket ticket, BindingResult bindingResult,
             @RequestParam("customerId") int customerId,
-            @RequestParam("depense.montant") double montant,
+            @RequestParam("depense.montant") BigDecimal montant,
             @RequestParam Map<String, String> formParams, Model model,
             @RequestParam("employeeId") int employeeId, Authentication authentication) {
 

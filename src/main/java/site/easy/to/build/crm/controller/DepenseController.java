@@ -1,5 +1,6 @@
 package site.easy.to.build.crm.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class DepenseController {
     public String createDepense(@ModelAttribute("depense") @Validated Depense ticket,
             BindingResult bindingResult,
             @RequestParam("customerId") int customerId,
-            @RequestParam("montant") double montant,
+            @RequestParam("montant") BigDecimal montant,
             @RequestParam Map<String, String> formParams,
             Model model,
             Authentication authentication) {

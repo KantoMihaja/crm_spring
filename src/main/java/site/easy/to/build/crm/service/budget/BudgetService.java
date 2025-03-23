@@ -3,8 +3,10 @@ package site.easy.to.build.crm.service.budget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.easy.to.build.crm.entity.Budget;
+import site.easy.to.build.crm.entity.Depense;
 import site.easy.to.build.crm.repository.BudgetRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -19,6 +21,11 @@ public class BudgetService {
 
     public Optional<Budget> findById(Integer id) {
         return budgetRepository.findById(id);
+    }
+
+    public List<Budget> findByCustomer(Integer customerId, LocalDateTime date) {
+        if (date == null) date = LocalDateTime.now();
+        return budgetRepository.findByCustomerAndDateBefore(customerId, date);
     }
 
     public Budget saveBudget(Budget budget) {
@@ -39,4 +46,8 @@ public class BudgetService {
             return budgetRepository.save(budget);
         });
     }
+
+    // public double depassementBudget(Budget newBudget) {
+        
+    // }
 }
