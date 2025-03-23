@@ -154,6 +154,11 @@
                         <li><a th:href="${home + 'employee/email-template/create'}">Create Template</a></li>
                     </ul>
                 </li>
+                <li>
+                    <form th:if="${#authorization.expression('hasRole(''ROLE_MANAGER'')')}" th:action="@{/resetData}" method="post">
+                        <button type="submit">Réinitialiser les données</button>
+                    </form>
+                </li>
             </ul>
             <ul id="sidebarnav" th:if="${#authorization.expression('hasRole(''ROLE_CUSTOMER'')')}">
                 <li class="user-pro">
