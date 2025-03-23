@@ -229,6 +229,15 @@ CREATE TABLE IF NOT EXISTS `customer` (
   ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
   /*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE TABLE IF NOT EXISTS `depense`(
+   id INT AUTO_INCREMENT,
+   montant DECIMAL(15,2)   NOT NULL,
+   date_creation DATETIME,
+   id_customer INT unsigned NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_customer) REFERENCES customer(customer_id)
+);
+
 --
 -- Table structure for table `trigger_lead`
 --
@@ -247,6 +256,7 @@ CREATE TABLE IF NOT EXISTS `trigger_lead` (
   `meeting_id` varchar(255) DEFAULT NULL,
   `google_drive` tinyint(1) DEFAULT NULL,
   `google_drive_folder_id` varchar(255) DEFAULT NULL,
+  `id_depense` INT,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`lead_id`),
   UNIQUE KEY `meeting_info` (`meeting_id`),
@@ -255,7 +265,8 @@ CREATE TABLE IF NOT EXISTS `trigger_lead` (
   KEY `employee_id` (`employee_id`),
   CONSTRAINT `trigger_lead_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
   CONSTRAINT `trigger_lead_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `trigger_lead_ibfk_3` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `trigger_lead_ibfk_3` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_id_depense_on_lead` FOREIGN KEY (`id_depense`) REFERENCES `depense`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -267,22 +278,24 @@ CREATE TABLE IF NOT EXISTS `trigger_lead` (
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE IF NOT EXISTS `trigger_ticket` (
-  `ticket_id` int unsigned NOT NULL AUTO_INCREMENT,
-  `subject` varchar(255) DEFAULT NULL,
-  `description` text,
-  `status` varchar(50) DEFAULT NULL,
-  `priority` varchar(50) DEFAULT NULL,
-  `customer_id` int unsigned NOT NULL,
-  `manager_id` int DEFAULT NULL,
-  `employee_id` int DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`ticket_id`),
-  KEY `fk_ticket_customer` (`customer_id`),
-  KEY `fk_ticket_manager` (`manager_id`),
-  KEY `fk_ticket_employee` (`employee_id`),
-  CONSTRAINT `fk_ticket_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
-  CONSTRAINT `fk_ticket_employee` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_ticket_manager` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`)
+    `ticket_id` int unsigned NOT NULL AUTO_INCREMENT,
+    `subject` varchar(255) DEFAULT NULL,
+    `description` text,
+    `status` varchar(50) DEFAULT NULL,
+    `priority` varchar(50) DEFAULT NULL,
+    `customer_id` int unsigned NOT NULL,
+    `manager_id` int DEFAULT NULL,
+    `employee_id` int DEFAULT NULL,
+    `created_at` datetime DEFAULT NULL,
+    `id_depense` INT,
+    PRIMARY KEY (`ticket_id`),
+    KEY `fk_ticket_customer` (`customer_id`),
+    KEY `fk_ticket_manager` (`manager_id`),
+    KEY `fk_ticket_employee` (`employee_id`),
+    CONSTRAINT `fk_ticket_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
+    CONSTRAINT `fk_ticket_employee` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`),
+    CONSTRAINT `fk_ticket_manager` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`),
+    CONSTRAINT `fk_id_depense` FOREIGN KEY (`id_depense`) REFERENCES `depense`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -505,7 +518,6 @@ CREATE TABLE IF NOT EXISTS `google_drive_file` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
 
 CREATE TABLE IF NOT EXISTS `budget`(
    id INT NOT NULL AUTO_INCREMENT,

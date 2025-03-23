@@ -57,6 +57,10 @@ public class Lead {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ManyToOne
+    @JoinColumn(name = "id_depense", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_id_depense_on_lead"), nullable = true)
+    private Depense depense;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -78,6 +82,25 @@ public class Lead {
         this.manager = manager;
         this.employee = employee;
         this.customer = customer;
+        this.createdAt = createdAt;
+    }
+
+    public Lead(String name, String status, String phone, String meetingId, Boolean googleDrive, String googleDriveFolderId,
+                List<LeadAction> leadActions, List<File> files, List<GoogleDriveFile> googleDriveFiles, User manager, User employee,
+                Customer customer, Depense depense, LocalDateTime createdAt) {
+        this.name = name;
+        this.status = status;
+        this.phone = phone;
+        this.meetingId = meetingId;
+        this.googleDrive = googleDrive;
+        this.googleDriveFolderId = googleDriveFolderId;
+        this.leadActions = leadActions;
+        this.files = files;
+        this.googleDriveFiles = googleDriveFiles;
+        this.manager = manager;
+        this.employee = employee;
+        this.customer = customer;
+        this.depense = depense;
         this.createdAt = createdAt;
     }
 
@@ -210,6 +233,14 @@ public class Lead {
         this.leadActions = leadActions;
     }
 
+    public Depense getDepense() {
+        return depense;
+    }
+
+    public void setDepense(Depense depense) {
+        this.depense = depense;
+    }
+    
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -218,5 +249,3 @@ public class Lead {
         this.createdAt = createdAt;
     }
 }
-
-
