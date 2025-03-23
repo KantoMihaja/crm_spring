@@ -45,6 +45,10 @@ public class Ticket {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ManyToOne
+    @JoinColumn(name = "id_depense", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_id_depense"), nullable = true)
+    private Depense depense;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -59,6 +63,19 @@ public class Ticket {
         this.manager = manager;
         this.employee = employee;
         this.customer = customer;
+        this.createdAt = createdAt;
+    }
+
+    public Ticket(String subject, String description, String status, String priority, User manager, User employee, 
+                  Customer customer, Depense depense, LocalDateTime createdAt) {
+        this.subject = subject;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+        this.manager = manager;
+        this.employee = employee;
+        this.customer = customer;
+        this.depense = depense;
         this.createdAt = createdAt;
     }
 
@@ -124,6 +141,14 @@ public class Ticket {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Depense getDepense() {
+        return depense;
+    }
+
+    public void setDepense(Depense depense) {
+        this.depense = depense;
     }
 
     public LocalDateTime getCreatedAt() {

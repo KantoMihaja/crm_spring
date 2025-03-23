@@ -26,6 +26,7 @@ import site.easy.to.build.crm.google.service.calendar.GoogleCalendarApiService;
 import site.easy.to.build.crm.google.service.drive.GoogleDriveApiService;
 import site.easy.to.build.crm.google.service.gmail.GoogleGmailApiService;
 import site.easy.to.build.crm.service.customer.CustomerService;
+import site.easy.to.build.crm.service.depense.DepenseService;
 import site.easy.to.build.crm.service.drive.GoogleDriveFileService;
 import site.easy.to.build.crm.service.file.FileService;
 import site.easy.to.build.crm.service.lead.LeadActionService;
@@ -58,11 +59,11 @@ public class LeadController {
     private final GoogleDriveFileService googleDriveFileService;
     private final FileUtil fileUtil;
     private final LeadEmailSettingsService leadEmailSettingsService;
+    private final DepenseService depenseService;
     private final GoogleGmailApiService googleGmailApiService;
     private final EntityManager entityManager;
 
-    @Autowired
-    public LeadController(LeadService leadService, AuthenticationUtils authenticationUtils, UserService userService, CustomerService customerService,
+    public LeadController(LeadService leadService, DepenseService depenseService, AuthenticationUtils authenticationUtils, UserService userService, CustomerService customerService,
                           LeadActionService leadActionService, GoogleCalendarApiService googleCalendarApiService, FileService fileService,
                           GoogleDriveApiService googleDriveApiService, GoogleDriveFileService googleDriveFileService, FileUtil fileUtil,
                           LeadEmailSettingsService leadEmailSettingsService, GoogleGmailApiService googleGmailApiService, EntityManager entityManager) {
@@ -78,6 +79,7 @@ public class LeadController {
         this.fileUtil = fileUtil;
         this.leadEmailSettingsService = leadEmailSettingsService;
         this.googleGmailApiService = googleGmailApiService;
+        this.depenseService = depenseService;
         this.entityManager = entityManager;
     }
 
@@ -168,6 +170,7 @@ public class LeadController {
     public String createLead(@ModelAttribute("lead") @Validated Lead lead, BindingResult bindingResult,
                              @RequestParam("customerId") int customerId, @RequestParam("employeeId") int employeeId,
                              Authentication authentication, @RequestParam("allFiles")@Nullable String files,
+                             @RequestParam("depense.montant") double montant,
                              @RequestParam("folderId") @Nullable String folderId, Model model) throws JsonProcessingException {
 
         int userId = authenticationUtils.getLoggedInUserId(authentication);
@@ -208,6 +211,10 @@ public class LeadController {
             }
         }
 
+        Depense depense = new Depense(montant, LocalDateTime.now(), customer);
+        depenseService.saveDepense(depense);
+
+        lead.setDepense(depense);
         Lead createdLead = leadService.save(lead);
         fileUtil.saveFiles(allFiles, createdLead);
 
