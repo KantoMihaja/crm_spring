@@ -11,7 +11,7 @@ import site.easy.to.build.crm.entity.Depense;
 
 @Repository
 public interface DepenseRepository extends JpaRepository<Depense, Integer> {
-    @Query("SELECT d FROM Depense d WHERE d.customer.id = :customerId AND d.dateCreation <= :date")
+    @Query("SELECT d FROM Depense d WHERE d.customer.id = :customerId AND d.dateCreation <= :dateCreation")
     List<Depense> findByCustomerAndDateBefore(@Param("customerId") Integer customerId, 
-                                              @Param("date") LocalDateTime date);
+                                              @Param("dateCreation") LocalDateTime dateCreation);
 }

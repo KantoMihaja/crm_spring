@@ -16,5 +16,5 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     void deleteById(Integer id);
 
-    List<Budget> findByCustomerAndDateBefore(Integer customerId, LocalDateTime dateCreation);
+    List<Budget> findByCustomer_CustomerIdAndDateCreationBefore(Integer customerId, LocalDateTime dateCreation);
 }

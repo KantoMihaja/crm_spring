@@ -25,7 +25,7 @@ public class BudgetService {
 
     public List<Budget> findByCustomer(Integer customerId, LocalDateTime dateCreation) {
         if (dateCreation == null) dateCreation = LocalDateTime.now();
-        return budgetRepository.findByCustomerAndDateBefore(customerId, dateCreation);
+        return budgetRepository.findByCustomer_CustomerIdAndDateCreationBefore(customerId, dateCreation);
     }
 
     public Budget saveBudget(Budget budget) {
