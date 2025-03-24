@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import site.easy.to.build.crm.entity.Depense;
 import site.easy.to.build.crm.entity.Ticket;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/employee/depense")
@@ -76,7 +78,7 @@ public class DepenseController {
     }
 
     @PostMapping("/create-depense")
-    public String createDepense(@ModelAttribute("depense") @Validated Depense ticket,
+    public String createDepense(@ModelAttribute("depense") @Validated Depense depense,
             BindingResult bindingResult,
             @RequestParam("customerId") int customerId,
             @RequestParam("montant") BigDecimal montant,
@@ -104,7 +106,7 @@ public class DepenseController {
             }
 
             model.addAttribute("customers", customers);
-            return "ticket/create-ticket";
+            return "depense/create-depense";
         }
 
         Customer customer = customerService.findByCustomerId(customerId);
@@ -122,10 +124,47 @@ public class DepenseController {
             }
         }
 
-        Depense depense = new Depense(montant, LocalDateTime.now(), customer);
-        depenseService.saveDepense(depense);
+        BigDecimal resteBudget = customerService.getResteBudget(customerId, depense.getDateCreation());
+
+        Depense dep = new Depense(montant, LocalDateTime.now(), customer);
+        if (depense.getMontant().compareTo(resteBudget) > 0) { 
+            model.addAttribute("confirmationMessage", "Le budget sera dépasser. Voulez-vous continuer ?");
+            model.addAttribute("depense", dep);
+            return "depense/confirm-depassement"; 
+        }
+
+        depenseService.saveDepense(dep);
 
         return "redirect:/employee/depense/manager/show-all";
     }
 
+    @PostMapping("/confirm-depassement")
+    public String confirmDepassementBudget(@RequestParam("customerId") int customerId,
+                                        @RequestParam("montant") BigDecimal montant,
+                                        @RequestParam("dateCreation") String dateCreation,
+                                        Model model, 
+                                        Authentication authentication) {
+
+        int userId = authenticationUtils.getLoggedInUserId(authentication);
+        User employee = userService.findById(userId);
+
+        if (employee == null) {
+            model.addAttribute("errorMessage", "Utilisateur non trouvé.");
+            return "error/500";
+        }
+
+        Customer customer = customerService.findByCustomerId(customerId);
+
+        if (customer == null) {
+            model.addAttribute("errorMessage", "Client non trouvé.");
+            return "error/404";
+        }
+
+        // Crée et enregistre la dépense
+        Depense depense = new Depense(montant, LocalDateTime.parse(dateCreation), customer);
+        depenseService.saveDepense(depense);
+
+        model.addAttribute("successMessage", "Dépense enregistrée avec succès.");
+        return "redirect:/employee/depense/manager/show-all";
+    }
 }

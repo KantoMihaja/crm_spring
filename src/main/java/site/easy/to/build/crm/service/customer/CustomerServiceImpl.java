@@ -73,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Budget> getBudget(int customerId, LocalDateTime date) {
         if (date == null) date = LocalDateTime.now();
-        return budgetRepository.findByCustomerAndDateBefore(customerId, date);
+        return budgetRepository.findByCustomer_CustomerIdAndDateCreationBefore((long) customerId, date);
     }
 
     @Override

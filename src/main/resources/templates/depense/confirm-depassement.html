@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{/general/head.html}"></div>
+<link th:href="@{/css/bootstrap-wysihtml5.css}" rel="stylesheet">
+<link th:href="@{/css/style.min.css}" rel="stylesheet">
+<link th:href="@{/css/pages/inbox.css}" rel="stylesheet">
+</head>
+
+<body class="skin-blue fixed-layout">
+<div class="preloader">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">CRM</p>
+    </div>
+</div>
+<div id="main-wrapper">
+    <div th:insert="~{/general/header.html}"></div>
+    <div th:insert="~{/general/left-sidebar.html}"></div>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:insert="~{/general/page-titles.html}"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Depassement du Budget</h4>
+                            <form method="post" th:object="${depense}" th:action="@{/employee/depense/confirm-depassement}">
+                                <input type="hidden" name="customerId" th:value="${depense.customer.customerId}">
+                                <input type="hidden" name="montant" th:value="${depense.montant}">
+                                <input type="hidden" name="dateCreation" th:value="${depense.dateCreation}">
+
+                                <p>Le budget sera dépassé. Voulez-vous continuer ?</p>
+
+                                <button type="submit">Confirmer</button>
+                                <a href="/employee/depense/manager/show-all">Annuler</a>
+                            </form>                            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:insert="~{/general/right-sidebar.html}"></div>
+
+        </div>
+    </div>
+    <div th:insert="~{/general/footer.html}"></div>
+</div>
+<script th:inline="javascript">
+    var home = /*[[${home}]]*/ null;
+</script>
+<script th:src="@{/js/library/jquery-3.2.1.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/perfect-scrollbar.jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/waves.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/sidebarmenu.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/sticky-kit.min.js}"></script>
+<script th:src="@{/js/library/jquery.sparkline.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/library/custom.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/library/wysihtml5-0.3.0.js}"></script>
+<script th:src="@{/js/library/bootstrap-wysihtml5.js}"></script>
+<script>
+    $(document).ready(function() {
+        $('.textarea_editor').wysihtml5();
+    });
+</script>
+
+</body>
+</html>

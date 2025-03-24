@@ -1,5 +1,6 @@
 package site.easy.to.build.crm.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -74,18 +75,18 @@ public class BudgetController {
 
         int userId = authenticationUtils.getLoggedInUserId(authentication);
         User user = userService.findById(userId);
-
+        
         if (user == null) {
             return "error/500";
         }
-// erreru
+        
         if (user.isInactiveUser()) {
             return "error/account-inactive";
         }
-
+        
         if (bindingResult.hasErrors()) {
             List<Customer> customers;
-
+            
             if (AuthorizationUtil.hasRole(authentication, "ROLE_MANAGER")) {
                 customers = customerService.findAll();
             } else {
@@ -97,11 +98,11 @@ public class BudgetController {
         }
 
         Customer customer = customerService.findByCustomerId(customerId);
-
+        
         if (customer == null) {
             return "error/500";
         }
-
+        
         if (AuthorizationUtil.hasRole(authentication, "ROLE_EMPLOYEE") && customer.getUser().getId() != userId) {
             return "error/500";
         }

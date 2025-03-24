@@ -44,6 +44,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/employee/lead")
@@ -212,7 +213,13 @@ public class LeadController {
             }
         }
 
+        BigDecimal resteBudget = customerService.getResteBudget(customerId, lead.getCreatedAt());
         Depense depense = new Depense(montant, LocalDateTime.now(), customer);
+        if (depense.getMontant().compareTo(resteBudget) > 0) { 
+            model.addAttribute("confirmationMessage", "Le budget sera dépasser. Voulez-vous continuer ?");
+            model.addAttribute("depense", depense);
+            return "depense/confirm-depassement"; 
+        }
         depenseService.saveDepense(depense);
 
         lead.setDepense(depense);
