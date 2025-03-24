@@ -1,8 +1,9 @@
 package site.easy.to.build.crm.service.user;
 
-import site.easy.to.build.crm.entity.User;
-
 import java.util.List;
+import java.util.Optional;
+
+import site.easy.to.build.crm.entity.User;
 
 public interface UserService {
 
@@ -22,4 +23,5 @@ public interface UserService {
 
     public List<User> findAll();
 
+    public Optional<User> findByUsernameAndPassword(String username, String password);
 }
