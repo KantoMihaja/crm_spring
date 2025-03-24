@@ -1,5 +1,7 @@
 package site.easy.to.build.crm.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,7 +18,7 @@ public class Depense {
 
     @NotNull(message = "Le montant est obligatoire")
     @Column(name = "montant", nullable = false)
-    private Double montant;
+    private BigDecimal montant;
 
     @NotNull(message = "La date de création est obligatoire")
     @Column(name = "date_creation")
@@ -30,7 +32,7 @@ public class Depense {
     public Depense() {
     }
 
-    public Depense(Double montant, LocalDateTime dateCreation, Customer customer) {
+    public Depense(BigDecimal montant, LocalDateTime dateCreation, Customer customer) {
         this.montant = montant;
         this.dateCreation = dateCreation;
         this.customer = customer;
@@ -45,11 +47,11 @@ public class Depense {
         this.id = id;
     }
 
-    public Double getMontant() {
+    public BigDecimal getMontant() {
         return montant;
     }
 
-    public void setMontant(Double montant) {
+    public void setMontant(BigDecimal montant) {
         this.montant = montant;
     }
 

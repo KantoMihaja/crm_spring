@@ -43,6 +43,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/employee/lead")
@@ -170,7 +171,7 @@ public class LeadController {
     public String createLead(@ModelAttribute("lead") @Validated Lead lead, BindingResult bindingResult,
                              @RequestParam("customerId") int customerId, @RequestParam("employeeId") int employeeId,
                              Authentication authentication, @RequestParam("allFiles")@Nullable String files,
-                             @RequestParam("depense.montant") double montant,
+                             @RequestParam("depense.montant") BigDecimal montant,
                              @RequestParam("folderId") @Nullable String folderId, Model model) throws JsonProcessingException {
 
         int userId = authenticationUtils.getLoggedInUserId(authentication);
@@ -211,7 +212,13 @@ public class LeadController {
             }
         }
 
+        BigDecimal resteBudget = customerService.getResteBudget(customerId, lead.getCreatedAt());
         Depense depense = new Depense(montant, LocalDateTime.now(), customer);
+        if (depense.getMontant().compareTo(resteBudget) > 0) { 
+            model.addAttribute("confirmationMessage", "Le budget sera dépasser. Voulez-vous continuer ?");
+            model.addAttribute("depense", depense);
+            return "depense/confirm-depassement"; 
+        }
         depenseService.saveDepense(depense);
 
         lead.setDepense(depense);

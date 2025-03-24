@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/employee/ticket")
@@ -131,7 +132,7 @@ public class TicketController {
     @PostMapping("/create-ticket")
     public String createTicket(@ModelAttribute("ticket") @Validated Ticket ticket, BindingResult bindingResult,
             @RequestParam("customerId") int customerId,
-            @RequestParam("depense.montant") double montant,
+            @RequestParam("depense.montant") BigDecimal montant,
             @RequestParam Map<String, String> formParams, Model model,
             @RequestParam("employeeId") int employeeId, Authentication authentication) {
 
@@ -172,7 +173,13 @@ public class TicketController {
             }
         }
 
+        BigDecimal resteBudget = customerService.getResteBudget(customerId, ticket.getCreatedAt());
         Depense depense = new Depense(montant, LocalDateTime.now(), customer);
+        if (depense.getMontant().compareTo(resteBudget) > 0) { 
+            model.addAttribute("confirmationMessage", "Le budget sera dépasser. Voulez-vous continuer ?");
+            model.addAttribute("depense", depense);
+            return "depense/confirm-depassement"; 
+        }
         depenseService.saveDepense(depense);
 
         ticket.setCustomer(customer);
