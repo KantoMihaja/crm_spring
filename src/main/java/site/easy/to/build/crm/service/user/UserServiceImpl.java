@@ -1,17 +1,27 @@
 package site.easy.to.build.crm.service.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import site.easy.to.build.crm.repository.UserRepository;
-import site.easy.to.build.crm.entity.User;
-
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import site.easy.to.build.crm.entity.User;
+import site.easy.to.build.crm.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService{
-
     @Autowired
     UserRepository userRepository;
+
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public long countAllUsers() {
@@ -51,5 +61,20 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> findByUsernameAndPassword(String username, String password) {
+        List<User> users = userRepository.findByUsername(username);
+        
+        if (users.isEmpty()) {
+            return Optional.empty();
+        }
+
+        User user = users.get(0);
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            return Optional.of(user);
+        }
+        return Optional.empty(); 
     }
 }
