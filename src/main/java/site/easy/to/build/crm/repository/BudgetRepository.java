@@ -10,7 +10,7 @@ import site.easy.to.build.crm.entity.Budget;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    List<Budget> findByCustomer_CustomerIdAndDateCreationBefore(Long customerId, LocalDateTime dateCreation);
+    List<Budget> findByCustomer_CustomerIdAndDateCreationBefore(long customerId, LocalDateTime dateCreation);
 
     Optional<Budget> findById(Integer id);
 
