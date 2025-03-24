@@ -19,24 +19,24 @@ public class BudgetService {
         return budgetRepository.findAll();
     }
 
-    public Optional<Budget> findById(Integer id) {
+    public Optional<Budget> findById(Long id) {
         return budgetRepository.findById(id);
     }
 
     public List<Budget> findByCustomer(Integer customerId, LocalDateTime date) {
         if (date == null) date = LocalDateTime.now();
-        return budgetRepository.findByCustomer_CustomerIdAndDateCreationBefore(customerId, date);
+        return budgetRepository.findByCustomerAndDateCreationBefore(customerId, date);
     }
 
     public Budget saveBudget(Budget budget) {
         return budgetRepository.save(budget);
     }
 
-    public void deleteBudget(Integer id) {
+    public void deleteBudget(Long id) {
         budgetRepository.deleteById(id);
     }
 
-    public Optional<Budget> updateBudget(Integer id, Budget updatedBudget) {
+    public Optional<Budget> updateBudget(Long id, Budget updatedBudget) {
         return budgetRepository.findById(id).map(budget -> {
             budget.setDesignation(updatedBudget.getDesignation());
             budget.setMontant(updatedBudget.getMontant());

@@ -11,7 +11,8 @@ public class Budget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
     @Column(name = "designation", length = 255)
     private String designation;
 
@@ -25,7 +26,7 @@ public class Budget {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "id_customer", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false) // La clé étrangère vers customer_id
     private Customer customer;
 
     // Constructeurs
@@ -40,11 +41,11 @@ public class Budget {
     }
 
     // Getters et Setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

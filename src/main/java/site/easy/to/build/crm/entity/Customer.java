@@ -225,6 +225,11 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
+    public Object getId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+    }
+
 //    public List<Ticket> getTickets() {
 //        return tickets;
 //    }

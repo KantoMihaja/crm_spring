@@ -133,12 +133,12 @@ public class BudgetController {
             return "error/account-inactive";
         }
 
-        Optional<Budget> budgetOptional = budgetService.findById(id);
+        Optional<Budget> budgetOptional = budgetService.findById((long) id);
         if (budgetOptional.isEmpty()) {
             return "error/not-found";
         }
 
-        budgetService.deleteBudget(id);
+        budgetService.deleteBudget((long) id);
         return "redirect:/employee/budget/manager/show-all";
     }
 }

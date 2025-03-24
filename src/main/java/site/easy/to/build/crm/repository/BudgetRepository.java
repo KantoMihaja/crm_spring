@@ -1,5 +1,6 @@
 package site.easy.to.build.crm.repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -7,14 +8,16 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import site.easy.to.build.crm.entity.Budget;
+import site.easy.to.build.crm.entity.Customer;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    List<Budget> findByCustomer_CustomerIdAndDateCreationBefore(long customerId, LocalDateTime dateCreation);
+    
+public List<Budget> findByCustomerAndDateCreationBefore(long customerId, LocalDateTime date);
+    
+    Optional<Budget> findById(Long id);  // Changer Integer en Long
+    
+    void deleteById(Long id);  // Changer Integer en Long
 
-    Optional<Budget> findById(Integer id);
-
-    void deleteById(Integer id);
-
-    List<Budget> findByCustomerAndDateBefore(Integer customerId, LocalDateTime dateCreation);
+    // List<Budget> findByCustomerAndDateCreationBefore(Integer customerId, LocalDateTime dateCreation);  // Correction du champ dateCreation
 }

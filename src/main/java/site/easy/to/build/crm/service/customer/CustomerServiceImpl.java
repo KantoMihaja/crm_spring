@@ -30,8 +30,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByCustomerId(int customerId) {
-        return customerRepository.findByCustomerId(customerId);
+    public Customer findByCustomerId(int customer_Id) {
+        return customerRepository.findByCustomerId(customer_Id);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Budget> getBudget(int customerId, LocalDateTime date) {
         if (date == null) date = LocalDateTime.now();
-        return budgetRepository.findByCustomer_CustomerIdAndDateCreationBefore((long) customerId, date);
+        return budgetRepository.findByCustomerAndDateCreationBefore((long) customerId, date);
     }
 
     @Override

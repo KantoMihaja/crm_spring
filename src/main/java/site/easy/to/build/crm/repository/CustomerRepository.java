@@ -7,6 +7,7 @@ import site.easy.to.build.crm.entity.Customer;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
@@ -21,4 +22,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     public List<Customer> findByUserIdOrderByCreatedAtDesc(int userId, Pageable pageable);
 
     long countByUserId(int userId);
+
+    public Optional<Customer> findById(Object id);
 }

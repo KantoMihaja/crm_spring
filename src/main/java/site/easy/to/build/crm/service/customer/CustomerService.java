@@ -11,11 +11,13 @@ import site.easy.to.build.crm.entity.Customer;
 import site.easy.to.build.crm.entity.Depense;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
 
-    public Customer findByCustomerId(int customerId);
-
+    public Customer findByCustomerId(Object customerId);
+    // Customer findById(int customerId);
+    // Customer findById(Object id);
     public List<Customer> findByUserId(int userId);
 
     public Customer findByEmail(String email);
@@ -35,4 +37,7 @@ public interface CustomerService {
     public List<Depense> getDepense(int customerId, LocalDateTime date);
     
     public BigDecimal getResteBudget(int customerId, LocalDateTime date);
+
+    public Customer findById(Object id);
+
 }

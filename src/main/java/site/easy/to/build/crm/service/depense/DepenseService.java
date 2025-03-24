@@ -47,4 +47,14 @@ public class DepenseService {
             return depenseRepository.save(depense);
         });
     }
+
+    public void delete(Depense depense) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    public Depense save(Depense depenseToUpdate) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    }
 }
