@@ -1,5 +1,17 @@
-{"properties": [{
-  "name": "weather.api.url",
-  "type": "java.lang.String",
-  "description": "A description for 'weather.api.url'"
-}]}
+{"properties": [
+  {
+    "name": "weather.api.url",
+    "type": "java.lang.String",
+    "description": "A description for 'weather.api.url'"
+  },
+  {
+    "name": "weather.api.key",
+    "type": "java.lang.String",
+    "description": "A description for 'weather.api.key'"
+  },
+  {
+    "name": "app.base-url",
+    "type": "java.lang.String",
+    "description": "A description for 'app.base-url'"
+  }
+]}
